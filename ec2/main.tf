@@ -70,11 +70,21 @@ data "aws_security_group" "web_sg" {
 
 data "aws_ami" "ubuntu_24_04" {
   most_recent = true
-  owners      = ["099720109477"] # Canonical's AWS account ID
+  owners      = ["099720109477"] # Canonical (official Ubuntu publisher)
 
   filter {
     name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-noble-24.04-amd64-server-*"]
+    values = ["ubuntu/images/*ubuntu-noble-24.04-amd64-server-*"]
+  }
+
+  filter {
+    name   = "architecture"
+    values = ["x86_64"]
+  }
+
+  filter {
+    name   = "root-device-type"
+    values = ["ebs"]
   }
 
   filter {
