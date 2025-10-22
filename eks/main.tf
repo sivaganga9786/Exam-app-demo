@@ -41,32 +41,6 @@ locals {
   ]
 }
 
-
-resource "aws_security_group" "eks_cluster_sg" {
-  name        = "${var.cluster_name}-cluster-sg"
-  description = "EKS cluster control plane security group"
-  vpc_id      = local.vpc_id
-
-  # Allow worker nodes to communicate with the control plane
-  ingress {
-    description = "Allow worker node communication"
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  # For testing only; narrow down in production
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "${var.cluster_name}-cluster-sg"
-  }
-}
 # ===============================
 # EKS Module
 # ===============================
@@ -76,7 +50,6 @@ module "eks" {
   cluster_version = "1.30"
   vpc_id          = local.vpc_id       # ✅ Required by your module
   subnet_ids      = local.web_subnets  # ✅ Correct plural form
-  security_group_ids = [aws_security_group.eks_cluster_sg.id]  # ✅ Optional but recommended
   node_groups = {
     default = {
       instance_types = ["t3.medium"]
