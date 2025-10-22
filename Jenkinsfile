@@ -69,7 +69,7 @@ pipeline {
         }
         stage('Update CD Repo') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'github-cred', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
+                withCredentials([usernamePassword(credentialsId: 'github', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
                     sh """
                     git clone -b ${CD_REPO_BRANCH} https://$GIT_USER:$GIT_PASS@${CD_REPO_URL} cd-repo
                     cd cd-repo/${K8S_MANIFEST_PATH}
