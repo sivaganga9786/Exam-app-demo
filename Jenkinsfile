@@ -81,7 +81,7 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'github-cred', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
                     sh """
-                    rm -rf cd-repo
+                    rm -rf Exam-app-demo
                     git clone -b ${CD_REPO_BRANCH} https://$GIT_USER:$GIT_PASS@github.com/sivaganga9786/Exam-app-demo.git Exam-app-demo
                     cd Exam-app-demo/${K8S_MANIFEST_PATH} && \
                     sed -i "s|image: ${DOCKER_IMAGE}:.*|image: ${DOCKER_IMAGE}:${IMAGE_TAG}|" deployment.yaml && \
