@@ -72,7 +72,7 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'github-cred', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
                     sh """
                     rm -rf cd-repo
-                    git clone -b ${CD_REPO_BRANCH} https://$GIT_USER:$GIT_PASS@github.com/sivaganga9786/cd-repo.git cd-repo
+                    git clone -b ${CD_REPO_BRANCH} https://$GIT_USER:$GIT_PASS@github.com/sivaganga9786/Exam-app-demo.git cd-repo
                     cd cd-repo/${K8S_MANIFEST_PATH} && \
                     sed -i "s|image: ${DOCKER_IMAGE}:.*|image: ${DOCKER_IMAGE}:${IMAGE_TAG}|" deployment.yaml && \
                     git config user.email "jenkins@example.com" && \
