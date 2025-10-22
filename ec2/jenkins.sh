@@ -17,6 +17,9 @@ echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
   https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
   /etc/apt/sources.list.d/jenkins.list > /dev/null
 
+
+wget http://localhost:8080/jnlpJars/jenkins-cli.jar -O /opt/jenkins-cli.jar
+
 # Update package manager repositories
 sudo apt update -y
 

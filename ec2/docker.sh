@@ -40,7 +40,11 @@ sudo -u jenkins docker ps
 # Update & Install Python pip 
 sudo apt-get update
 sudo apt-get install -y python3-venv python3-pip
-
+sudo apt install ansible-core -y
+# Verify Ansible installation
+ansible --version
+ 
 # Install docker-compose on your Jenkins server:
 sudo apt-get update
 sudo apt-get install -y docker-compose-plugin
+docker compose version

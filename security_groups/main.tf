@@ -40,6 +40,13 @@ module "web_sg" {
       to_port     = 8080
       protocol    = "tcp"
       cidr_blocks = ["0.0.0.0/0"]
+    },
+    {
+      description = "Allow HTTP from Sonar Server"
+      from_port   = 9000
+      to_port     = 9000
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
     }
   ]
 

@@ -108,9 +108,10 @@ module "Examapp_instance" {
   role                 = "exam-app-server"
   #user_data = file("${path.module}/jenkins.sh")
   user_data = join("\n", [
-      file("${path.module}/docker.sh"),
       file("${path.module}/trivy.sh"),
-      file("${path.module}/jenkins.sh")
+      file("${path.module}/jenkins.sh"),
+      file("${path.module}/docker.sh"),
+      file("${path.module}/sonar.sh")
     ])
 
 }
