@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  ec2-resources-creation:
+  eks-resources-creation:
     runs-on: ubuntu-latest
     defaults:
       run:
