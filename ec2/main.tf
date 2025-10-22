@@ -86,5 +86,6 @@ module "web_instance" {
   iam_instance_profile = "ec2_ssm_role-instance-profile"
   project_name         = "exam-app"
   role                 = "exam-app-server"
+  user_data = file("${path.module}/trivy.sh")
 }
 

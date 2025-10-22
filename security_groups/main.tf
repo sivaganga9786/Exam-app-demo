@@ -18,34 +18,6 @@ locals {
 ########################################
 # Web ALB Security Group
 ########################################
-module "web_sg_alb" {
-  source       = "git::https://github.com/sivaganga9786/Terraform-foundation.git//terraform-modules/security_groups"
-  project_name = "web-sg-alb"
-  vpc_id       = local.vpc_id
-  vpc_cidr     = local.vpc_cidr
-  user_data = file("${path.module}/trivy.sh")
-
-  ingress_rules = [
-    {
-      description = "Allow HTTP from Internet"
-      from_port   = 80
-      to_port     = 80
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
-    }
-  ]
-
-  # Egress to VPC (instead of specific SG to avoid dependency loop)
-  egress_rules = [
-    {
-      description = "Allow outbound to VPC"
-      from_port   = 0
-      to_port     = 0
-      protocol    = "-1"
-      cidr_blocks = [local.vpc_cidr]
-    }
-  ]
-}
 
 module "web_sg" {
   source       = "git::https://github.com/sivaganga9786/Terraform-foundation.git//terraform-modules/security_groups"
