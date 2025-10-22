@@ -1,0 +1,73 @@
+name: AWS Resources Creation
+
+on:
+  workflow_dispatch:
+
+jobs:
+  resources-creation:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.6.0
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.SECRET_KEY }}
+          aws-region: us-east-1
+
+      ######################
+      # 1️⃣ IAM Module
+    # #   ######################
+      - name: Terraform Init IAM
+        working-directory: ./iam
+        run: terraform init
+
+      - name: Terraform Plan IAM
+        working-directory: ./iam
+        run: terraform plan
+
+      - name: Terraform Apply IAM
+        working-directory: ./iam
+        run: terraform apply -auto-approve
+
+      ######################
+      # 2️⃣ VPC Module
+      ######################
+      - name: Terraform Init VPC
+        working-directory: ./vpc
+        run: terraform init
+
+      - name: Terraform Plan VPC
+        working-directory: ./vpc
+        run: terraform plan
+
+      - name: Terraform Apply VPC
+        working-directory: ./vpc
+        run: terraform apply -auto-approve
+
+
+    #   #############################
+    #   # 3️⃣ Security Groups Module (Conditional)
+    #   #############################
+      - name: Terraform Init SG
+        working-directory: ./security_groups
+        run: terraform init
+
+      - name: Terraform Plan SG
+        working-directory: ./security_groups
+        run: terraform plan 
+
+      - name: Terraform Apply SG
+        working-directory: ./security_groups
+        run: terraform apply -auto-approve 
