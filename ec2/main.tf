@@ -36,7 +36,16 @@ locals {
   ]
 }
 
+# ===============================
+# Security Groups
+# ===============================
 
+data "aws_security_group" "web_sg" {
+  filter {
+    name   = "group-name"
+    values = ["web-sg-sg"]
+  }
+}
 
 # ===============================
 # Get the latest Amazon Linux 2023 AMI
@@ -77,15 +86,22 @@ data "aws_ami" "ubuntu_24_04" {
 # ===============================
 # Web EC2 Instance (Public Subnet)
 # ===============================
-module "web_instance" {
+module "Examapp_instance" {
   source               = "git::https://github.com/sivaganga9786/Terraform-foundation.git//terraform-modules/ec2"
-  ami_id               = data.aws_ami.amazon_linux_2023.id
+ # ami_id               = data.aws_ami.amazon_linux_2023.id
+  ami_id               = data.aws_ami.ubuntu_24_04.id
   instance_type        = "t2.large"
   subnet_id            = local.web_subnets[0]
   security_group_ids   = [data.aws_security_group.web_sg.id]
   iam_instance_profile = "ec2_ssm_role-instance-profile"
   project_name         = "exam-app"
   role                 = "exam-app-server"
-  user_data = file("${path.module}/trivy.sh")
+  #user_data = file("${path.module}/jenkins.sh")
+  user_data = join("\n", [
+      file("${path.module}/docker.sh"),
+      file("${path.module}/trivy.sh"),
+      file("${path.module}/jenkins.sh")
+    ])
+
 }
 

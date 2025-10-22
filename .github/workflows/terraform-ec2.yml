@@ -1,4 +1,4 @@
-name: AWS EC2 Resources  Creation
+name: AWS EC2 Creation
 
 on:
   workflow_dispatch:
@@ -27,7 +27,7 @@ jobs:
           aws-region: us-east-1
 
       ######################
-      # 1️⃣ IAM Module
+      # 1️⃣ EC2 Module
     #   ######################
       - name: Terraform Init ec2
         working-directory: ./ec2
@@ -36,6 +36,7 @@ jobs:
       - name: Terraform Plan ec2
         working-directory: ./ec2  
         run: terraform plan
+
       - name: Terraform Apply ec2
         working-directory: ./ec2  
         run: terraform apply -auto-approve
