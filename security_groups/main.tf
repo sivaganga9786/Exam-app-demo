@@ -31,7 +31,8 @@ module "web_sg" {
       from_port       = 80
       to_port         = 80
       protocol        = "tcp"
-      security_groups = [module.web_sg_alb.security_group_id]
+      cidr_blocks = ["0.0.0.0/0"]
+
     },
     {
       description = "Allow HTTP from Jenkins Server"
