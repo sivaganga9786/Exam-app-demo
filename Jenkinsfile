@@ -71,19 +71,20 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'github-cred', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
                     sh """
-                    git clone -b ${CD_REPO_BRANCH} https://$GIT_USER:$GIT_PASS@${CD_REPO_URL} cd-repo
-                    cd cd-repo/${K8S_MANIFEST_PATH}
-                    # Update image tag in deployment.yaml
-                    sed -i 's|image: ${DOCKER_IMAGE}:.*|image: ${DOCKER_IMAGE}:${IMAGE_TAG}|' deployment.yaml
-                    git config user.email "jenkins@example.com"
-                    git config user.name "Jenkins CI"
-                    git add deployment.yaml
-                    git commit -m "Update image to ${IMAGE_TAG}"
+                    rm -rf cd-repo
+                    git clone -b ${CD_REPO_BRANCH} https://$GIT_USER:$GIT_PASS@github.com/sivaganga9786/cd-repo.git cd-repo
+                    cd cd-repo/${K8S_MANIFEST_PATH} && \
+                    sed -i "s|image: ${DOCKER_IMAGE}:.*|image: ${DOCKER_IMAGE}:${IMAGE_TAG}|" deployment.yaml && \
+                    git config user.email "jenkins@example.com" && \
+                    git config user.name "Jenkins CI" && \
+                    git add deployment.yaml && \
+                    git commit -m "Update image to ${IMAGE_TAG}" && \
                     git push origin ${CD_REPO_BRANCH}
                     """
                 }
             }
         }
+
     }
 
     post {
