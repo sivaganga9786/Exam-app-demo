@@ -45,15 +45,25 @@ pipeline {
             steps {
                 dir('backend') {
                     script {
+                        // Use Jenkins build number as the tag
+                        def imageTag = "${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
+                        
                         withDockerRegistry(credentialsId: 'docker', toolName: 'docker') {
-                            sh "docker build -t ${DOCKER_IMAGE} ."
-                            // Push the image to Docker Hub if needed
-                            sh "docker push ${DOCKER_IMAGE}"
+                            // Build the Docker image with the build number tag
+                            sh "docker build -t ${imageTag} ."
+                            
+                            // Push the image to Docker Hub
+                            sh "docker push ${imageTag}"
+                            
+                            // Optionally, also tag as latest if needed
+                            sh "docker tag ${imageTag} ${DOCKER_IMAGE}:latest"
+                            sh "docker push ${DOCKER_IMAGE}:latest"
                         }
                     }
                 }
             }
         }
+
 
         // Added Docker Scout Image Analysis
         stage('Docker Scout Image Analysis') {
