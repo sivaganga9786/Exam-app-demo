@@ -55,15 +55,6 @@ pipeline {
             }
         }
 
-
-        stage('Push Docker Image') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-cred', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
-                    sh "echo $PASS | docker login -u $USER --password-stdin"
-                    sh "docker push ${DOCKER_IMAGE}:${IMAGE_TAG}"
-                }
-            }
-        }
         // Added Docker Scout Image Analysis
         stage('Docker Scout Image Analysis') {
             steps {
