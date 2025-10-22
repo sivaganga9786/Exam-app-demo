@@ -6,7 +6,7 @@ pipeline {
         IMAGE_TAG = "${env.BUILD_NUMBER}"
         CD_REPO_URL = "https://github.com/sivaganga9786/Exam-app-demo.git"
         CD_REPO_BRANCH = "main"
-        K8S_MANIFEST_PATH = "manifests/devops-app" // Path in CD repo
+        K8S_MANIFEST_PATH = "eks/k8s" // Path in CD repo
         SCANNER_HOME = tool 'sonar-scanner'
     }
 
@@ -72,8 +72,8 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'github-cred', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
                     sh """
                     rm -rf cd-repo
-                    git clone -b ${CD_REPO_BRANCH} https://$GIT_USER:$GIT_PASS@github.com/sivaganga9786/Exam-app-demo.git cd-repo
-                    cd cd-repo/${K8S_MANIFEST_PATH} && \
+                    git clone -b ${CD_REPO_BRANCH} https://$GIT_USER:$GIT_PASS@github.com/sivaganga9786/Exam-app-demo.git Exam-app-demo
+                    cd Exam-app-demo/${K8S_MANIFEST_PATH} && \
                     sed -i "s|image: ${DOCKER_IMAGE}:.*|image: ${DOCKER_IMAGE}:${IMAGE_TAG}|" deployment.yaml && \
                     git config user.email "jenkins@example.com" && \
                     git config user.name "Jenkins CI" && \
