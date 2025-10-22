@@ -20,22 +20,13 @@ jobs:
           aws-secret-access-key: ${{ secrets.SECRET_KEY }}
           aws-region: us-east-1
 
-      - name: Terraform Init rds
-        working-directory: ./rds
+      - name: Terraform Init eks
+        working-directory: ./eks
         run: |
           terraform init -input=false -reconfigure
 
-      - name: Terraform destroy rds
-        working-directory: ./rds
-        run: terraform destroy -auto-approve
-
-      - name: Terraform Init internal-lb
-        working-directory: ./internal-lb
-        run: |
-          terraform init -input=false -reconfigure
-
-      - name: Terraform destroy internal-lb
-        working-directory: ./internal-lb
+      - name: Terraform destroy eks
+        working-directory: ./eks
         run: terraform destroy -auto-approve
 
     
